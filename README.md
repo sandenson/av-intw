@@ -1,2 +1,3 @@
 # av-intw
-Avaliação para a matéria Introdução às Tecnologias Web.
+
+Avaliação para o componente de curso Introdução às Tecnologias Web.
