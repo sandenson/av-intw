@@ -83,6 +83,8 @@ h1, h2, h3, h4, p {
 
 .music-grid .music-entry-card img {
     border: .5px solid;
+    max-height: 300px;
+    max-width: 300px;
 }
 
 .tags-section {
