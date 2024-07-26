@@ -105,8 +105,7 @@ h1, h2, h3, h4, p {
 }
 
 .tags-section .tags .tag {
-    color: lightgray;
-    background-color: teal;
+    background-color: #fb6924;
     border-radius: .8rem;
     padding: .1rem .4rem;
     margin: .1rem;
