@@ -1,0 +1,39 @@
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+form div.form-input {
+    display: flex;
+    flex-direction: row;
+    margin: .2rem 0;
+    justify-content: center;
+}
+
+form div.form-input input {
+    height: fit-content;
+    align-self: center;
+}
+
+form div.form-input input {
+    padding: .25rem;
+    margin-left: 1rem;
+    border-radius: .5rem;
+    background-color: #242424;
+    color: #fb6924;
+}
+
+form div.form-submit {
+    display: flex;
+    flex-direction: row;
+    margin: .2rem 0;
+    justify-content: center;
+}
+
+form div.form-submit button {
+    background-color: #fb6924;
+    border: none;
+    padding: .25rem;
+    border-radius: .5rem;
+}
