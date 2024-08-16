@@ -106,3 +106,22 @@ function POSITIVO_NEGATIVO(formId) {
         return number > 0;
     }
 }
+
+function PAR_IMPAR(formId) {
+    const number = document
+        .querySelector(`form#${formId}`)
+        ?.querySelector('input[type=number]')
+        ?.valueAsNumber;
+
+    if (!number) {
+        alert('Preencha um número inteiro diferente de 0.');
+
+        return false;
+    } else {
+        number % 2 === 0
+            ? alert('O número é par')
+            : alert('O número é ímpar');
+
+        return number % 2 === 0;
+    }
+}
