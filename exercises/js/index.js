@@ -23,8 +23,12 @@ function VOGAL(formId) {
 
     if (!letter) {
         alert('Preencha uma letra.');
+
+        return 0;
     } else if (!/[a-z]{1}/i.test(letter)) {
         alert('Valor inserido não é uma letra');
+
+        return 0;
     } else {
         const vowel = /[aeiou]{1}/i.test(letter);
 
