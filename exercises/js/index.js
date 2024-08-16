@@ -3,7 +3,7 @@ function MAIOR_MENOR(formId) {
         document
             .querySelector(`form#${formId}`)
             ?.querySelectorAll('input')
-    )?.map((input) => input.valueAsNumber)?.filter(value => !isNaN(value)).sort((a, b) => a - b);
+    )?.map((input) => input.valueAsNumber)?.filter(value => !isNaN(value))?.sort((a, b) => a - b);
 
     if (!values) {
         alert('Formulário não encontrado.');
@@ -33,5 +33,41 @@ function VOGAL(formId) {
         vowel ? alert(`"${letter}" é uma vogal`) : alert(`"${letter}" é uma consoante`);
 
         return Number(vowel);
+    }
+}
+
+function LIMITES(formId) {
+    const values = Array.from(
+        document
+            .querySelector(`form#${formId}`)
+            ?.querySelectorAll('input')
+    )?.map((input) => input.valueAsNumber)
+    ?.filter(value => !isNaN(value))
+    ?.sort((a, b) => a - b)
+    ?.map((value, i) => {
+        if (value % 2 === 0) {
+            return value;
+        } else {
+            return i === 0 ? value + 1 : value - 1
+        }
+    });
+
+    console.log(values);
+
+    if (!values) {
+        alert('Formulário não encontrado.');
+    } else if (values.length !== 2) {
+        alert('Insira dois valores.');
+    } else {
+        const numbers = Array.from(
+            { length: values[1] - values[0] + 1 },
+            (_, index) => values[0] + index
+        ).filter(value => value % 2 === 0);
+
+        const sum = numbers.reduce((a, b) => a + b);
+
+        console.log({ numbers, sum });
+
+        alert('Resultados no console');
     }
 }
