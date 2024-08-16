@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zain:wght@200;300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../index.css">
+    <link rel="stylesheet" href="index.css">
+    <title>Empório Musical Samberas</title>
+</head>
+<body>
+    <header class="main-header">
+        <h1 class="zain-bold">Empório Musical Samberas</h1>
+    </header>
+    <div id="js-exercise-1" class="section">
+        <h2 class="section-title">
+            1. Maior e menor
+        </h2>
+        <form id="question1">
+            <div class="form-input">
+                <label for="int1">Valor 1: </label>
+                <input type="number" name="int1" id="int1">
+            </div>
+            <div class="form-input">
+                <label for="int2">Valor 2: </label>
+                <input type="number" name="int2" id="int2">
+            </div>
+            <div class="form-input">
+                <label for="int3">Valor 3: </label>
+                <input type="number" name="int3" id="int3">
+            </div>
+            <div class="form-input">
+                <label for="int4">Valor 4: </label>
+                <input type="number" name="int4" id="int4">
+            </div>
+            <div class="form-input">
+                <label for="int5">Valor 5: </label>
+                <input type="number" name="int5" id="int5">
+            </div>
+            <div class="form-submit">
+                <button type="button" onclick="MAIOR_MENOR('question1')">Executar</button>
+            </div>
+        </form>
+    </div>
+    <div id="js-exercise-2" class="section">
+        <h2 class="section-title">
+            2. Vogal ou consoante
+        </h2>
+        <form id="question2">
+            <div class="form-input">
+                <label for="letter">Letra: </label>
+                <input type="text" minlength="1" maxlength="1" name="letter" id="letter">
+            </div>
+            <div class="form-submit">
+                <button type="button" onclick="VOGAL('question2')">Executar</button>
+            </div>
+        </form>
+    </div>
+    <div id="js-exercise-3" class="section">
+        <h2 class="section-title">
+            3. Limites
+        </h2>
+        <form id="question3">
+            <div class="form-input">
+                <label for="li">Limite inicial: </label>
+                <input type="number" name="li" id="li">
+            </div>
+            <div class="form-input">
+                <label for="lf">Limite final: </label>
+                <input type="number" name="lf" id="lf">
+            </div>
+            <div class="form-submit">
+                <button type="button" onclick="LIMITES('question3')">Executar</button>
+            </div>
+        </form>
+    </div>
+    <div id="js-exercise-4" class="section">
+        <h2 class="section-title">
+            4. Ordem
+        </h2>
+        <form id="question4">
+            <div class="form-input">
+                <label for="int1-4">Valor 1: </label>
+                <input type="number" name="int1-4" id="int1-4">
+            </div>
+            <div class="form-input">
+                <label for="int2-4">Valor 2: </label>
+                <input type="number" name="int2-4" id="int2-4">
+            </div>
+            <div class="form-input">
+                <label for="int3-4">Valor 3: </label>
+                <input type="number" name="int3-4" id="int3-4">
+            </div>
+            <div class="form-submit">
+                <button type="button" onclick="ORDEM('question4')">Ordenar</button>
+            </div>
+        </form>
+    </div>
+    <div id="js-exercise-5" class="section">
+        <h2 class="section-title">
+            5. Positivo ou negativo
+        </h2>
+        <form id="question5">
+            <div class="form-input">
+                <label for="int">Número inteiro: </label>
+                <input type="number" name="int" id="int">
+            </div>
+            <div class="form-submit">
+                <button type="button" onclick="POSITIVO_NEGATIVO('question5')">Ordenar</button>
+            </div>
+        </form>
+    </div>
+    <div id="js-exercise-6" class="section">
+        <h2 class="section-title">
+            6. Par ou ímpar
+        </h2>
+        <form id="question6">
+            <div class="form-input">
+                <label for="int-6">Número inteiro: </label>
+                <input type="number" name="int-6" id="int-6">
+            </div>
+            <div class="form-submit">
+                <button type="button" onclick="PAR_IMPAR('question6')">Ordenar</button>
+            </div>
+        </form>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
