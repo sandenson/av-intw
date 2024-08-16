@@ -21,8 +21,6 @@ function VOGAL(formId) {
             ?.querySelectorAll('input[type=text]')
     )?.map((input) => input.value)?.shift()?.charAt(0);
 
-    console.log("letter", letter);
-
     if (!letter) {
         alert('Preencha uma letra.');
     } else if (!/[a-z]{1}/i.test(letter)) {
@@ -51,8 +49,6 @@ function LIMITES(formId) {
             return i === 0 ? value + 1 : value - 1
         }
     });
-
-    console.log(values);
 
     if (!values) {
         alert('Formulário não encontrado.');
