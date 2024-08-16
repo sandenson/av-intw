@@ -87,3 +87,22 @@ function ORDEM(formId) {
         alert(`Valores em ordem: ${values.reduce((a, b) => `${a}, ${b}`)}`);
     }
 }
+
+function POSITIVO_NEGATIVO(formId) {
+    const number = document
+        .querySelector(`form#${formId}`)
+        ?.querySelector('input[type=number]')
+        ?.valueAsNumber;
+
+    if (!number) {
+        alert('Preencha um número inteiro diferente de 0.');
+
+        return false;
+    } else {
+        number > 0
+            ? alert('O número é positivo')
+            : alert('O número é negativo');
+
+        return number > 0;
+    }
+}
