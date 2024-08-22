@@ -72,19 +72,20 @@ h1, h2, h3, h4, p {
     display: grid;
     padding: .8rem;;
     gap: 1.6rem;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto auto auto auto auto;
 }
 
 .music-grid .music-entry-card {
     height: 100%;
+    width: 100%;
+    max-width: 300px;
     display: flex;
     flex-direction: column;
 }
 
 .music-grid .music-entry-card img {
     border: .5px solid;
-    max-height: 300px;
-    max-width: 300px;
+    width: 100%;
 }
 
 .tags-section {
