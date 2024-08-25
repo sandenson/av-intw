@@ -1,3 +1,11 @@
+function getUser() {
+    return JSON.parse(window.localStorage.getItem('user'));
+}
+
+function loggedIn() {
+    return !!getUser();
+}
+
 function signup(username, password, confirm) {
     if (!(username && password && confirm)) {
         return (alert('Preencha todos os campos do formulário'));
