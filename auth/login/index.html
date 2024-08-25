@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Zain:wght@200;300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../index.css">
     <link rel="stylesheet" href="../index.css">
+    <script src="../../routes/index.js"></script>
+    <script src="../index.js"></script>
     <title>Empório Musical Samberas</title>
 </head>
 <body>
@@ -22,10 +24,15 @@
         <div id="login-form-div" class="auth-form-div">
             <form id="login-form" class="auth-form">
                 <label for="username">Nome de usuário</label>
-                <input type="text" name="username" id="username">
+                <input type="text" name="username" id="username" required>
                 <label for="password">Senha</label>
-                <input type="password" name="password" id="password">
-                <button type="submit">Entrar</button>
+                <input type="password" name="password" id="password" required>
+                <button
+                    type="button"
+                    onclick="login(document.getElementById('username').value, document.getElementById('password').value)"
+                >
+                    Entrar
+                </button>
             </form>
         </div>
     </div>

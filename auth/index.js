@@ -33,3 +33,30 @@ function signup(username, password, confirm) {
 
     return redirect();
 }
+
+function login(username, password) {
+    if (!(username && password)) {
+        return (alert('Preencha todos os campos do formulário'));
+    }
+    
+    const users = JSON.parse(window.localStorage.getItem('users'));
+
+    if (users) {
+        existingUser = users.find(
+            user => user.username === username
+        );
+
+        if (existingUser) {
+            if (existingUser.password === password) {
+                window.localStorage.setItem('user', JSON.stringify(existingUser));
+                return redirect();
+            } else {
+                document.getElementById('password').focus();
+                return alert('Senha incorreta');
+            }
+        }
+    }
+
+    document.getElementById('username').focus();
+    return alert('Usuário não existe');
+}
