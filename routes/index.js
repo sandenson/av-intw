@@ -14,3 +14,7 @@ function goTo(page) {
             break;
     }
 }
+
+function redirect() {
+    return goTo(new URLSearchParams(window.location.search).get('redirect') || 'home');
+}
