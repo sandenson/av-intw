@@ -4,10 +4,14 @@ function goTo(page) {
             window.location.pathname = '';
             break;
         case 'signup':
-            window.location.pathname = '/auth/signup';
+            if (!loggedIn()) {
+                window.location.pathname = '/auth/signup';
+            }
             break;
         case 'login':
-            window.location.pathname = '/auth/login';
+            if (!loggedIn()) {
+                window.location.pathname = '/auth/login';
+            }
             break;
         default:
             window.location.pathname = '';

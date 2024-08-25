@@ -6,6 +6,12 @@ function loggedIn() {
     return !!getUser();
 }
 
+function authorizeAuthentication () {
+    if (loggedIn()) {
+        return redirect();
+    }
+}
+
 function signup(username, password, confirm) {
     if (!(username && password && confirm)) {
         return (alert('Preencha todos os campos do formulário'));
