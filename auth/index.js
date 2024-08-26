@@ -13,8 +13,32 @@ function authorizeAuthentication () {
 }
 
 function signup(username, password, confirm) {
-    if (!(username && password && confirm)) {
-        return (alert('Preencha todos os campos do formulário'));
+    if (!fieldsNotEmpty(username, password, confirm)) {
+        return alert('Preencha todos os campos do formulário');
+    }
+
+    if (!/^.{6,}$/.test(password)) {
+        return alert('A senha deve possuir pelo menos 6 caracteres');
+    }
+
+    if (!/^.{6,30}$/.test(password)) {
+        return alert('A senha não pode possuir mais de 30 caracteres');
+    }
+
+    if (!/^(?=.*[a-z]).{6,30}$/.test(password)) {
+        return alert('A senha deve possuir pelo menos uma letra minúscula');
+    }
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z]).{6,30}$/.test(password)) {
+        return alert('A senha deve possuir pelo menos uma letra maiúscula');
+    }
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,30}$/.test(password)) {
+        return alert('A senha deve possuir pelo menos um número');
+    }
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{6,30}$/.test(password)) {
+        return alert('A senha deve possuir pelo menos um caractere especial (ex.: @, #, %, .)');
     }
     
     if (password !== confirm) {
@@ -49,8 +73,8 @@ function signup(username, password, confirm) {
 }
 
 function login(username, password) {
-    if (!(username && password)) {
-        return (alert('Preencha todos os campos do formulário'));
+    if (!fieldsNotEmpty(username, password, confirm)) {
+        return alert('Preencha todos os campos do formulário');
     }
     
     const users = JSON.parse(window.localStorage.getItem('users'));
