@@ -33,7 +33,6 @@
 html {
     height: 100%;
 }
-  
 
 body {
     margin: 0;
@@ -53,11 +52,88 @@ header.main-header {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 header.main-header h1 {
     text-align: center;
     font-size: 2.4rem;
+}
+
+header.main-header #user-info-div-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    right: 2rem;
+}
+
+#user-info-div-header #user-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#user-info-div-header #user-info span#username {
+    font-weight: 800;
+    font-size: larger;
+    margin-right: .4rem;
+}
+
+#user-info-div-header #user-info img#pfp {
+    border-radius: 50%;
+    height: 2.4rem;
+}
+
+#user-info-div-header button#logout {
+    color: #fb6924;
+    width: fit-content;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-weight: 600;
+    font-style: inherit;
+    font-size: large;
+}
+
+#user-info-div-header button#logout:hover {
+    cursor: pointer;
+    transition: 200ms;
+    color: #da4500;
+}
+
+header.main-header #auth-div-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    right: 2rem;
+}
+
+#auth-div-header span#auth-cta {
+    font-weight: 600;
+    font-size: larger;
+}
+
+#auth-div-header #auth-redirects {
+}
+
+#auth-div-header #auth-redirects a {
+    font-weight: 600;
+    font-size: large;
+    color: #fb6924;
+    text-decoration: none;
+}
+
+#auth-div-header #auth-redirects a:first-child {
+    margin-right: .4rem;
+}
+
+#auth-div-header #auth-redirects a:hover {
+    transition: 200ms;
+    font-weight: 800;
+    font-size: larger;
+    color: #da4500;
 }
 
 .section {
