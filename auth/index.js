@@ -17,7 +17,7 @@ function signup(username, profilePicture, password, confirm) {
         return alert('Preencha todos os campos do formulário');
     }
 
-    if (fieldsNotEmpty(profilePicture) && !isValidImageUrl(profilePicture)) {
+    if (fieldsNotEmpty(profilePicture) && !isValidHttpUrl(profilePicture)) {
         return alert('URL de imagem inválida');
     }
 

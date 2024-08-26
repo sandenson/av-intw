@@ -14,14 +14,3 @@ function isValidHttpUrl(string) {
         return false;  
     }
 }
-
-function isValidImageUrl(string){
-    if (isValidHttpUrl(string)) {
-        var arr = [ "jpeg", "jpg", "gif", "png" ];
-        var ext = string.substring(string.lastIndexOf(".")+1);
-        
-        return !!arr.find(item => item === ext);
-    } else {
-        return false;
-    }
-}
