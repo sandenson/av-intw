@@ -82,7 +82,8 @@ header.main-header #user-info-div-header {
 
 #user-info-div-header #user-info img#pfp {
     border-radius: 50%;
-    height: 2.4rem;
+    height: 3.2rem;
+    width: 3.2rem;
 }
 
 #user-info-div-header button#logout {
@@ -99,6 +100,8 @@ header.main-header #user-info-div-header {
 #user-info-div-header button#logout:hover {
     cursor: pointer;
     transition: 200ms;
+    font-weight: 800;
+    font-size: larger;
     color: #da4500;
 }
 
@@ -113,9 +116,6 @@ header.main-header #auth-div-header {
 #auth-div-header span#auth-cta {
     font-weight: 600;
     font-size: larger;
-}
-
-#auth-div-header #auth-redirects {
 }
 
 #auth-div-header #auth-redirects a {
