@@ -59,3 +59,13 @@ form.auth-form button:hover {
     transition: 200ms;
     background-color: #ff5d12;
 }
+
+form.auth-form .login-signup-cta a {
+    font-weight: 600;
+    color: #fb6924;
+}
+
+form.auth-form .login-signup-cta a:hover {
+    transition: 200ms;
+    color: #da4500;
+}
