@@ -102,3 +102,10 @@ function login(username, password) {
     document.getElementById('username').focus();
     return alert('Usuário não existe');
 }
+
+function logout() {
+    if (confirm('Deseja sair de sua conta?')) {
+        window.localStorage.removeItem('user');
+        return goTo('home');
+    }
+}
