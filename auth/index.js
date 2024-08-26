@@ -12,9 +12,13 @@ function authorizeAuthentication () {
     }
 }
 
-function signup(username, password, confirm) {
+function signup(username, profilePicture, password, confirm) {
     if (!fieldsNotEmpty(username, password, confirm)) {
         return alert('Preencha todos os campos do formulário');
+    }
+
+    if (fieldsNotEmpty(profilePicture) && !isValidImageUrl(profilePicture)) {
+        return alert('URL de imagem inválida');
     }
 
     if (!/^.{6,}$/.test(password)) {
@@ -48,7 +52,7 @@ function signup(username, password, confirm) {
     
     const users = JSON.parse(window.localStorage.getItem('users'));
 
-    const user = { username, password };
+    const user = { username, profilePicture, password };
 
     if (users) {
         existingUser = users.find(

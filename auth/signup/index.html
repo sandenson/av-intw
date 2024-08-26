@@ -27,8 +27,10 @@
         </h2>
         <div id="signup-form-div" class="auth-form-div">
             <form id="signup-form" class="auth-form" onsubmit="() => false">
-                <label for="username">Nome de usuário</label>
+                <label for="username">Nome de usuári@</label>
                 <input type="text" name="username" id="username" required>
+                <label for="profile-picture">Imagem de usuári@ (url, opcional)</label>
+                <input type="url" name="profile-picture" id="profile-picture">
                 <label for="password">Senha</label>
                 <input
                     type="password"
@@ -52,7 +54,7 @@
                 <span class="login-signup-cta">Já tem uma conta? <a href="/auth/login">Entrar</a>.</span>
                 <button
                     type="button"
-                    onclick="signup(document.getElementById('username').value, document.getElementById('password').value, document.getElementById('confirm-password').value)"
+                    onclick="signup(document.getElementById('username').value, document.getElementById('profile-picture').value, document.getElementById('password').value, document.getElementById('confirm-password').value)"
                 >
                     Cadastre-se
                 </button>
