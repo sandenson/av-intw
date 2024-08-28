@@ -1,5 +1,4 @@
 function populateHeader() {
-    console.log('jorge')
     if (loggedIn()) {
         const user = getUser();
 
@@ -9,9 +8,15 @@ function populateHeader() {
         userInfoDiv.querySelector('div#user-info > span#username').textContent = user.username;
         userInfoDiv.querySelector('div#user-info > img#pfp').src = user.profilePicture;
         
-        authDiv.style.display = 'none';
-        authDiv.hidden = true;
-        userInfoDiv.style.display = null;
-        userInfoDiv.hidden = false;
+        toggleHidden(authDiv, userInfoDiv);
+    }
+}
+
+function populateRecommendedCta() {
+    if (loggedIn()) {
+        toggleHidden(
+            document.getElementById('recommendation-cta-logged-out'),
+            document.getElementById('recommendation-cta-logged-in')
+        );
     }
 }

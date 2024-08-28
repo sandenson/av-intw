@@ -68,6 +68,20 @@ header.main-header #user-info-div-header {
     right: 2rem;
 }
 
+a {
+    font-weight: 400;
+    font-size: 1rem;
+    color: #fb6924;
+    text-decoration: none;
+}
+
+a:hover {
+    transition: 200ms;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #da4500;
+}
+
 #user-info-div-header #user-info {
     display: flex;
     flex-direction: row;
@@ -200,4 +214,8 @@ h1, h2, h3, h4, p {
     width: 1.2rem;
     border-radius: 50%;
     margin-right: .2rem;
+}
+
+.hidden {
+    display: none !important;
 }

@@ -9,12 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Zain:wght@200;300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
     <script src="./utils/validation/index.js"></script>
+    <script src="./utils/components/index.js"></script>
     <script src="./auth/index.js"></script>
     <script src="./routes/index.js"></script>
     <script src="./index.js"></script>
     <script>
         window.onload = () => {
             populateHeader();
+            populateRecommendedCta();
         };
     </script>
     <title>Empório Musical Samberas</title>
@@ -22,7 +24,7 @@
 <body>
     <header class="main-header">
         <h1 class="zain-bold">Empório Musical Samberas</h1>
-        <div id="user-info-div-header" style="display:none" hidden>
+        <div id="user-info-div-header" class="hidden" hidden>
             <div id="user-info">
                 <span id="username"></span>
                 <img id="pfp" src="" alt="profile-picture">
@@ -37,6 +39,17 @@
             </div>
         </div>
     </header>
+    <div id="recommendation" class="section">
+        <h2 class="section-title">
+            Recomende música
+        </h2>
+        <span id="recommendation-cta-logged-out">
+            Faça <a href="/auth/login">login</a> para <a>recomendar</a>, ou recomende de forma anônima!
+        </span>
+        <span id="recommendation-cta-logged-in" class="hidden" hidden>
+            <a>Recomende</a> publicamente ou de forma anônima!
+        </span>
+    </div>
     <div id="music-rotation" class="section">
         <h2 class="section-title">
             Em rotação
