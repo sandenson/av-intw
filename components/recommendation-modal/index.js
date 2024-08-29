@@ -44,3 +44,42 @@ function initializeCoverPreview() {
         }
     }
 }
+
+function recommendMusic(anonymous = true, title, artist, type, cover, genres, tags) {
+    if (!(title && artist && type && cover)) {
+        return alert('Os campos de título, artistas, tipo e capa são obrigatórios');
+    }
+
+    if (!isValidHttpUrl(cover)) {
+        return alert('Imagem de capa inválida');
+    }
+
+    function processTags(string) {
+        if (string.includes(',')) {
+            return string.split(',').map(sbstr => sbstr.trim());
+        }
+        return string;
+    }
+
+    const recommendation = {
+        user: anonymous ? null : getUser(),
+        title,
+        artist,
+        type,
+        cover,
+        genres: genres ? processTags(genres) : [],
+        tags: tags ? processTags(tags) : [],
+    }
+    
+    const recommendations = JSON.parse(window.localStorage.getItem('recommendations'));
+
+    if (recommendations) {
+        recommendations.push(recommendation);
+        window.localStorage.setItem('recommendations', JSON.stringify(recommendations));
+    } else {
+        window.localStorage.setItem('recommendations', JSON.stringify([recommendation]));
+    }
+
+    toggleHiddenModal();
+    document.querySelector('#recommendation-form > form').reset();
+}
