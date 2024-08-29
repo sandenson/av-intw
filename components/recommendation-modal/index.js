@@ -1,6 +1,15 @@
 function initializeRecommendationModal() {
+    initializeCloseModal();
     initializeAnonymous();
     initializeCoverPreview();
+}
+
+function toggleHiddenModal() {
+    toggleHidden(document.getElementById('recommendation-modal'));
+}
+
+function initializeCloseModal() {
+    document.querySelector('#recommendation-modal .close').onclick = () => toggleHiddenModal();
 }
 
 function initializeAnonymous() {

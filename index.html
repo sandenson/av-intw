@@ -50,13 +50,13 @@
             Recomende música
         </h2>
         <span id="recommendation-cta-logged-out">
-            Faça <a href="/auth/login">login</a> para <a>recomendar</a>, ou recomende de forma anônima!
+            Faça <a href="/auth/login">login</a> para <a href="javascript:toggleHiddenModal()">recomendar</a>, ou recomende de forma anônima!
         </span>
         <span id="recommendation-cta-logged-in" class="hidden" hidden>
-            <a>Recomende</a> publicamente ou de forma anônima!
+            <a href="javascript:toggleHiddenModal()">Recomende</a> publicamente ou de forma anônima!
         </span>
     </div>
-    <div id="recommendation-modal" class="modal">
+    <div id="recommendation-modal" class="modal hidden" hidden>
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2 class="section-title">Recomende música</h1>
