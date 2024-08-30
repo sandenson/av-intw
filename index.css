@@ -160,7 +160,23 @@ h1, h2, h3, h4, p {
 }
 
 .section-title {
+    transition: 200ms;
     border-bottom: 1px solid #000;
+}
+
+.section-title:has(+.music-grid)::before {
+    content: '-';
+    font-weight: bolder;
+}
+
+.section-title:has(+.music-grid.collapsed)::before {
+    content: '+';
+    font-weight: bolder;
+}
+
+.section-title:has(+.music-grid):hover {
+    cursor: pointer;
+    color: #fb6924;
 }
 
 .music-grid {
@@ -168,6 +184,12 @@ h1, h2, h3, h4, p {
     padding: .8rem;;
     gap: 1.6rem;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    overflow: hidden;
+    transition: max-height 400ms ease-out, padding 400ms ease-out;
+}
+
+.collapsed {
+    padding: 0 .8rem;
 }
 
 .music-grid .music-entry-card {

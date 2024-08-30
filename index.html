@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./components/recommendation-modal/index.css">
     
     <script src="./utils/validation/index.js"></script>
+    <script src="./utils/components/collapsible-grid/index.js"></script>
     <script src="./utils/components/index.js"></script>
     <script src="./auth/index.js"></script>
     <script src="./routes/index.js"></script>
@@ -21,6 +22,7 @@
     <script>
         window.onload = () => {
             populateHeader();
+            activateCollapsibles()
             populateRecommendedCta();
             initializeRecommendationModal();
         };
