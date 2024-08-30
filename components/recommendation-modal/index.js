@@ -2,6 +2,7 @@ function initializeRecommendationModal() {
     initializeCloseModal();
     initializeAnonymous();
     initializeCoverPreview();
+    initializeRecommendations();
 }
 
 function toggleHiddenModal() {
@@ -45,6 +46,91 @@ function initializeCoverPreview() {
     }
 }
 
+function createRecommendationCard(recommendation) {
+    const { user, title, artist, type, cover, genres, tags } = recommendation;
+
+    const card = document.createElement('div');
+    card.className = 'music-entry-card';
+
+    const titleEl = document.createElement('h3');
+    card.appendChild(titleEl);
+    titleEl.className = 'music-title';
+    titleEl.textContent = title;
+
+    const artistEl = document.createElement('h4');
+    card.appendChild(artistEl);
+    artistEl.className = 'music-artist';
+    artistEl.textContent = artist;
+
+    const typeEl = document.createElement('span');
+    card.appendChild(typeEl);
+    typeEl.className = 'music-type';
+    typeEl.textContent = type;
+
+    const coverEl = document.createElement('img');
+    card.appendChild(coverEl);
+    coverEl.alt = `${title.replace(/[^A-z0-9]+/gm, '-').replace(/-$/, '').toLowerCase()}-cover`;
+    coverEl.src = cover;
+
+    const userEl = document.createElement('div');
+    card.appendChild(userEl);
+    userEl.className = 'tags-section';
+    userEl.appendChild(document.createElement('p'));
+    userEl.firstElementChild.textContent = 'Recomendado por';
+
+    const userTagsEl = document.createElement('div');
+    userEl.appendChild(userTagsEl);
+    userTagsEl.className = 'tags';
+
+    const userTagEl = document.createElement('span');
+    userTagsEl.appendChild(userTagEl);
+    userTagEl.className = 'tag';
+    const userPfpHtml = user?.profilePicture ?  `<img src="${user.profilePicture}" alt="recommender-pfp"> ` : '';
+    userTagEl.innerHTML = `${userPfpHtml}${user?.username || 'Anônim@'}`;
+
+    const genresEl = document.createElement('div');
+    card.appendChild(genresEl);
+    genresEl.className = 'tags-section';
+    genresEl.appendChild(document.createElement('p'));
+    genresEl.firstElementChild.textContent = 'Gêneros';
+
+    const genreTagsEl = document.createElement('div');
+    genresEl.appendChild(genreTagsEl);
+    genreTagsEl.className = 'tags';
+    genreTagsEl.append(...genres.map(genre => {
+        const genreTagEl = document.createElement('span');
+        genreTagEl.className = 'tag';
+        genreTagEl.textContent = genre;
+        return genreTagEl;
+    }));
+
+    const tagsEl = document.createElement('div');
+    card.appendChild(tagsEl);
+    tagsEl.className = 'tags-section';
+    tagsEl.appendChild(document.createElement('p'));
+    tagsEl.firstElementChild.textContent = 'Tags';
+
+    const musicTagsEl = document.createElement('div');
+    tagsEl.appendChild(musicTagsEl);
+    musicTagsEl.className = 'tags';
+    musicTagsEl.append(...tags.map(tag => {
+        const tagEl = document.createElement('span');
+        tagEl.className = 'tag';
+        tagEl.textContent = tag;
+        return tagEl;
+    }));
+
+    document.querySelector('#music-recommendations > .music-grid').appendChild(card);
+}
+
+function initializeRecommendations() {
+    const recommendations = JSON.parse(window.localStorage.getItem('recommendations'));
+
+    if (recommendations?.length > 0) {
+        recommendations.forEach(createRecommendationCard);
+    }
+}
+
 function recommendMusic(anonymous = true, title, artist, type, cover, genres, tags) {
     if (!(title && artist && type && cover)) {
         return alert('Os campos de título, artistas, tipo e capa são obrigatórios');
@@ -58,7 +144,7 @@ function recommendMusic(anonymous = true, title, artist, type, cover, genres, ta
         if (string.includes(',')) {
             return string.split(',').map(sbstr => sbstr.trim());
         }
-        return string;
+        return [string];
     }
 
     const recommendation = {
@@ -80,6 +166,7 @@ function recommendMusic(anonymous = true, title, artist, type, cover, genres, ta
         window.localStorage.setItem('recommendations', JSON.stringify([recommendation]));
     }
 
+    createRecommendationCard(recommendation);
     toggleHiddenModal();
     document.querySelector('#recommendation-form > form').reset();
 }
