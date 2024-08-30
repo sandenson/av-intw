@@ -4,17 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zain:wght@200;300;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="./components/recommendation-modal/index.css">
+    
     <script src="./utils/validation/index.js"></script>
+    <script src="./utils/components/index.js"></script>
     <script src="./auth/index.js"></script>
     <script src="./routes/index.js"></script>
+    <script src="./components/recommendation-modal/index.js"></script>
     <script src="./index.js"></script>
+
     <script>
         window.onload = () => {
             populateHeader();
+            populateRecommendedCta();
+            initializeRecommendationModal();
         };
     </script>
     <title>Empório Musical Samberas</title>
@@ -22,7 +30,7 @@
 <body>
     <header class="main-header">
         <h1 class="zain-bold">Empório Musical Samberas</h1>
-        <div id="user-info-div-header" style="display:none" hidden>
+        <div id="user-info-div-header" class="hidden" hidden>
             <div id="user-info">
                 <span id="username"></span>
                 <img id="pfp" src="" alt="profile-picture">
@@ -37,6 +45,104 @@
             </div>
         </div>
     </header>
+    <div id="recommendation" class="section">
+        <h2 class="section-title">
+            Recomende música
+        </h2>
+        <span id="recommendation-cta-logged-out">
+            Faça <a href="/auth/login">login</a> para <a href="javascript:toggleHiddenModal()">recomendar</a>, ou recomende de forma anônima!
+        </span>
+        <span id="recommendation-cta-logged-in" class="hidden" hidden>
+            <a href="javascript:toggleHiddenModal()">Recomende</a> publicamente ou de forma anônima!
+        </span>
+    </div>
+    <div id="recommendation-modal" class="modal hidden" hidden>
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="section-title">Recomende música</h1>
+            <div id="recommendation-form" class="section">
+                <form>
+                    <div class="row hidden" hidden>
+                        <label for="anonymous">Recomendar de forma anônima</label>
+                        <input type="checkbox" name="anonymous" id="recommendation-anonymous" value="true" checked>
+                    </div>
+                    <div class="row">
+                        <div class="row">
+                            <label for="title">Título</label>
+                            <input
+                                type="text"
+                                name="title"
+                                id="recommendation-title"
+                                placeholder="Título"
+                                required
+                            >
+                        </div>
+                        <div class="row">
+                            <label for="artists">Artista(s)</label>
+                            <input
+                                type="text"
+                                name="artists"
+                                id="recommendation-artists"
+                                placeholder="Nome(s) d@(s) artistas e/ou grupos"
+                                required
+                            >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row">
+                            <label for="type">Tipo</label>
+                            <select name="type" id="recommendation-type" required>
+                                <option value="Música">Música</option>
+                                <option value="Álbum">Álbum</option>
+                                <option value="EP">EP</option>
+                                <option value="Mixtape">Mixtape</option>
+                                <option value="Single">Single</option>
+                                <option value="Compilação">Compilação</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <label for="cover">Capa</label>
+                            <input
+                                type="url"
+                                name="cover"
+                                id="recommendation-cover"
+                                placeholder="Url da imagem"
+                            >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <img src="" alt="album-cover" class="hidden" hidden>
+                        <div class="column">
+                            <div class="column">
+                                <label for="genres">Gêneros (separados por vírgulas)</label>
+                                <textarea
+                                    name="genres"
+                                    id="recommendation-genres"
+                                    rows="3"
+                                    placeholder="Exemplo: Hip hop,Rap,Metal, Djent, Jazz, Fusion, Bossa nova, MPB"
+                                ></textarea>
+                            </div>
+                            <div class="column">
+                                <label for="tags">Tags (separadas por vírgulas)</label>
+                                <textarea
+                                    name="tags"
+                                    id="recommendation-tags"
+                                    rows="3"
+                                    placeholder='Inserir "Tyler, The Creator" vai criar as tags "Tyler" e "The Creator"'
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        onclick="recommendMusic(document.getElementById('recommendation-anonymous').checked, document.getElementById('recommendation-title').value, document.getElementById('recommendation-artists').value, document.getElementById('recommendation-type').value, document.getElementById('recommendation-cover').value, document.getElementById('recommendation-genres').value, document.getElementById('recommendation-tags').value)"
+                    >
+                        Recomendar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
     <div id="music-rotation" class="section">
         <h2 class="section-title">
             Em rotação
@@ -48,7 +154,7 @@
                 <span class="music-type">Música</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e027ba7b4d23c717f3211717946" alt="big-fish-theory-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop experimental</span>
@@ -56,7 +162,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Vince Staples</span>
                         <span class="tag">Kendrick Lamar</span>
@@ -72,7 +178,7 @@
                 <span class="music-type">Música</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e027513c4956ea5552caf02eab6" alt="4-44-jay-z-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -80,7 +186,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Jay-Z</span>
                         <span class="tag">No I.D.</span>
@@ -93,13 +199,13 @@
                 <span class="music-type">Música</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02ff0e5290b07d9f86c21e1aae" alt="one-of-a-kind-bruford-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Jazz fusion</span>
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Bruford</span>
                         <span class="tag">Bill Bruford</span>
@@ -115,13 +221,13 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02ff0e5290b07d9f86c21e1aae" alt="one-of-a-kind-bruford-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Jazz fusion</span>
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Bruford</span>
                         <span class="tag">Bill Bruford</span>
@@ -137,7 +243,7 @@
                 <span class="music-type">Música</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02c027ad28821777b00dcaa888" alt="black-panther-album-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Trap</span>
@@ -145,7 +251,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Vince Staples</span>
                         <span class="tag">Kendrick Lamar</span>
@@ -161,7 +267,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02cc186f1bfb7589712e2a881f" alt="yes-lawd-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">R&B</span>
                         <span class="tag">Hip hop</span>
@@ -170,7 +276,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">NxWorries</span>
                         <span class="tag">Anderson .Paak</span>
@@ -184,7 +290,7 @@
                 <span class="music-type">Música</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0288e3822cccfb8f2832c70c2e" alt="brat-charli-xcx-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Pop</span>
                         <span class="tag">Synth-pop</span>
@@ -192,7 +298,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Charli xcx</span>
                         <span class="tag">A. G. Cook</span>
@@ -207,7 +313,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02e5bd8e6421836818cddeb2d6" alt="fearless-movement-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Jazz fusion</span>
                         <span class="tag">Jazz funk</span>
@@ -215,7 +321,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Kamasi Washington</span>
                         <span class="tag">André 3000</span>
@@ -231,14 +337,14 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02a738e97b5738c0b5d89d38d7" alt="o-raio-silibrina-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Jazz fusion</span>
                         <span class="tag">Brasileira</span>
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Silibrina</span>
                         <span class="tag">Gabriel Nóbrega</span>
@@ -253,7 +359,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e028b52c6b9bc4e43d873869699" alt="damn-kendrick-lamar-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -265,7 +371,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Kendrick Lamar</span>
                         <span class="tag">TDE</span>
@@ -292,6 +398,48 @@
             </div>
         </div>
     </div>
+    <div id="music-recommendations" class="section">
+        <h2 class="section-title">
+            Recomendações
+        </h2>
+        <div class="music-grid">
+            <div class="music-entry-card">
+                <h3 class="music-title">PHANTOMIME</h3>
+                <h4 class="music-artist">Mori Calliope</h4>
+                <span class="music-type">Álbum</span>
+                <img src="https://i.scdn.co/image/ab67616d0000b2734decfba07e62fcd26eaedc6c" alt="big-fish-theory-cover">
+                <div class="tags-section">
+                    <p>Recomendado por</p>
+                    <div class="tags">
+                        <span class="tag"><img src="https://pbs.twimg.com/profile_images/1828474759698333696/8BgYmxI3_400x400.jpg" alt="recommender-pfp"> ParukoRefrain</span>
+                    </div>
+                </div>
+                <div class="tags-section">
+                    <p>Gêneros</p>
+                    <div class="tags">
+                        <span class="tag">Hip hop</span>
+                        <span class="tag">Hip hop japonês</span>
+                        <span class="tag">Rock</span>
+                        <span class="tag">J-rock</span>
+                        <span class="tag">Pop</span>
+                        <span class="tag">J-pop</span>
+                        <span class="tag">Metal</span>
+                        <span class="tag">Metal alternativo</span>
+                    </div>
+                </div>
+                <div class="tags-section">
+                    <p>Tags</p>
+                    <div class="tags">
+                        <span class="tag">Mori Calliope</span>
+                        <span class="tag">Lotus Juice</span>
+                        <span class="tag">Kobo Kanaeru</span>
+                        <span class="tag">TeddyLoid</span>
+                        <span class="tag">Giga</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="music-radar" class="section">
         <h2 class="section-title">
             Radar de novidades
@@ -303,7 +451,7 @@
                 <span class="music-type">Single</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02a35ead6e4b1dcebe0be6e6df" alt="satellite-business-2-0-sampha-little-simz-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">R&B</span>
                         <span class="tag">R&B alternativo</span>
@@ -316,7 +464,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Sampha</span>
                         <span class="tag">Little Simz</span>
@@ -331,7 +479,7 @@
                 <span class="music-type">Música</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0288e3822cccfb8f2832c70c2e" alt="brat-charli-xcx-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Pop</span>
                         <span class="tag">Synth-pop</span>
@@ -342,7 +490,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Charli xcx</span>
                         <span class="tag">A. G. Cook</span>
@@ -357,7 +505,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e023fb9700186c245ff1f85b0fc" alt="kotms-vol-2-denzel-curry-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Southern hip hop</span>
@@ -366,7 +514,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Denzel Curry</span>
                         <span class="tag">2 Chainz</span>
@@ -381,7 +529,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e022129eda0ae3c8426c3d4dc7d" alt="dark-times-vince-staples-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -391,7 +539,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Vince Staples</span>
                         <span class="tag">Cardo</span>
@@ -406,7 +554,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0271d62ea7ea8a5be92d3c1f62" alt="hit-me-hard-and-soft-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Pop</span>
                         <span class="tag">Electropop</span>
@@ -417,7 +565,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Billie Eilish</span>
                     </div>
@@ -429,7 +577,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e024a6951c62cc01153fdd22052" alt="please-dont-cry-rapsody-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -439,7 +587,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Rapsody</span>
                         <span class="tag">Hit-Boy</span>
@@ -452,7 +600,7 @@
                 <span class="music-type">Mixtape</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02f07737652b6102890b4b840d" alt="scrapyard-quadeca-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop experimental</span>
@@ -463,7 +611,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Quadeca</span>
                         <span class="tag">Kevin Abstract</span>
@@ -476,14 +624,14 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02e5f143a6fbd201f53f38e86d" alt="ywgbyst-knocked-loose-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Metalcore</span>
                         <span class="tag">Hardcore punk</span>
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Knocked Loose</span>
                         <span class="tag">Kevin Abstract</span>
@@ -496,7 +644,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02afd65b04748aff25b77071f4" alt="samurai-lupe-fiasco-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Jazz rap</span>
@@ -506,7 +654,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Lupe Fiasco</span>
                     </div>
@@ -518,7 +666,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0216997b4a53ae6b42a4b803be" alt="lives-outgrown-beth-gibbons-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Folk</span>
                         <span class="tag">Chamber folk</span>
@@ -529,7 +677,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Beth Gibbons</span>
                         <span class="tag">Portishead</span>
@@ -544,7 +692,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://upload.wikimedia.org/wikipedia/en/3/3e/Jack_White_No_Name_vinyl_label.png" alt="no-name-jack-white-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Garage rock revival</span>
@@ -556,7 +704,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Jack White</span>
                         <span class="tag">The White Stripes</span>
@@ -569,7 +717,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e021f4e2d002b9d1920339a5109" alt="only-god-was-above-us-vampire-weekend-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Indie rock</span>
@@ -582,7 +730,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Vampire Weekend</span>
                     </div>
@@ -594,7 +742,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02f2f78fdf667745983bb565a8" alt="#richaxxhaitian-mach-hommy-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -605,7 +753,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Mach-Hommy</span>
                         <span class="tag">Conductor Williams</span>
@@ -621,7 +769,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e029e7004b8749744b06fa81a99" alt="#richaxxhaitian-mach-hommy-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">West Coast hip hop</span>
@@ -633,7 +781,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">NxWorries</span>
                         <span class="tag">Anderson .Paak</span>
@@ -647,7 +795,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02626b6b651eb24b8c2aa71ea0" alt="the-auditorium-vol-1-common-pete-rock-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Jazz rap</span>
@@ -657,7 +805,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Common</span>
                         <span class="tag">Pete Rock</span>
@@ -670,7 +818,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02902e9fffc3787dd4fe7678e7" alt="all-born-screaming-st-vincent-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Art rock</span>
@@ -685,7 +833,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">St. Vincent</span>
                     </div>
@@ -697,7 +845,7 @@
                 <span class="music-type">Álbum ao vivo</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0238d984a6f28eb63a1180aef3" alt="kessoku-band-live-at-zepp-haneda-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">J-rock</span>
@@ -706,7 +854,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Kessoku Band</span>
                         <span class="tag">Anime</span>
@@ -719,7 +867,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e021572698fff8a1db257a53599" alt="cowboy-carter-beyoncé-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Country</span>
                         <span class="tag">Country pop</span>
@@ -729,7 +877,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Beyoncé</span>
                         <span class="tag">Pharrell</span>
@@ -752,7 +900,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0205c9a49574cc249f1c5405ab" alt="bando-stone-childish-gambino-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop experimental</span>
@@ -769,7 +917,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Childish Gambino</span>
                         <span class="tag">Michael Uzowuru</span>
@@ -787,7 +935,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02b968625b03ec59b30b48e9c3" alt="orquideas-kali-uchis-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Pop</span>
                         <span class="tag">Pop latino</span>
@@ -799,7 +947,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Kali Uchis</span>
                         <span class="tag">Sounwave</span>
@@ -813,7 +961,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e024eecd9c840fa38687e6fe009" alt="almighty-so-2-chief-keef-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Drill</span>
@@ -824,7 +972,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Chief Keef</span>
                         <span class="tag">Sexyy Red</span>
@@ -838,7 +986,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02454a4fb74aa36c7cb57b9153" alt="blue-lips-schoolboy-q-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">West Coast hip hop</span>
@@ -851,7 +999,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">ScHoolboy Q</span>
                         <span class="tag">TDE</span>
@@ -872,7 +1020,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e025290f7a7c65d9b5d61d99d2b" alt="bad-cameo-james-blake-lil-yachty-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Pop</span>
                         <span class="tag">Art pop</span>
@@ -886,7 +1034,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">James Blake</span>
                         <span class="tag">Lil Yachty</span>
@@ -899,7 +1047,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02346d7f8849953b3dc398f497" alt="corpos-de-agua-sonhos-tomam-conta-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Pop</span>
                         <span class="tag">Dream pop</span>
@@ -913,7 +1061,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">sonhos tomam conta</span>
                         <span class="tag">Brasileira</span>
@@ -926,7 +1074,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02d353552c4c2932094456bbe9" alt="we-still-dont-trust-you-future-metro-boomin-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Trap</span>
@@ -940,7 +1088,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Future</span>
                         <span class="tag">Metro Boomin</span>
@@ -958,7 +1106,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e021fa931efbed00048477f868d" alt="johann-sebastian-bachlava-the-doctor-action-bronson-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Jazz rap</span>
@@ -967,7 +1115,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Action Bronson</span>
                         <span class="tag">Daringer</span>
@@ -983,13 +1131,13 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02647341fda32667bf2a14dcb7" alt="smile-porter-robinson-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Electropop</span>
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Porter Robinson</span>
                         <span class="tag">James Ivy</span>
@@ -1012,7 +1160,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02eddb2639b74ac6c202032ebe" alt="section-80-kendrick-lamar-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -1024,7 +1172,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Kendrick Lamar</span>
                         <span class="tag">TDE</span>
@@ -1046,7 +1194,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02dc04f429698834d0736ddb0a" alt="sobrevivendo-no-inferno-racionais-mcs-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -1058,7 +1206,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Racionais MC's</span>
                         <span class="tag">Mano Brown</span>
@@ -1074,7 +1222,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02dc20397b139223620af148f6" alt="dummy-portishead-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Trip hop</span>
                         <span class="tag">Dark jazz</span>
@@ -1084,7 +1232,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Portishead</span>
                         <span class="tag">Beth Gibbons</span>
@@ -1097,7 +1245,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e025b924aa009b61b6b9d831eec" alt="melyt-my-eyez-denzel-curry-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -1109,7 +1257,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Denzel Curry</span>
                         <span class="tag">JPEGMAFIA</span>
@@ -1133,7 +1281,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02f4ca75192df162f78a24023e" alt="4-your-eyez-only-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -1143,7 +1291,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">J. Cole</span>
                         <span class="tag">Dreamville</span>
@@ -1158,7 +1306,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://f4.bcbits.com/img/a1891644629_16.jpg" alt="music-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Cloud rap</span>
@@ -1171,7 +1319,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">JPEGMAFIA</span>
                         <span class="tag">Kevin Lamar</span>
@@ -1184,7 +1332,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0243c27e535cefe3f389fff437" alt="run-the-jewels-1-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hardcore hip hop</span>
@@ -1192,7 +1340,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Run the Jewels</span>
                         <span class="tag">Killer Mike</span>
@@ -1206,7 +1354,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e020df6fde15c74b41449275c44" alt="michael-killer-mike-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -1219,7 +1367,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Killer Mike</span>
                         <span class="tag">El-P</span>
@@ -1241,7 +1389,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e025f78e92704e25622e36ec4b2" alt="music-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop abstrato</span>
@@ -1254,7 +1402,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">El-P</span>
                         <span class="tag">Aesop Rock</span>
@@ -1267,7 +1415,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02f552daab2bc3dc64d2c4c649" alt="no-love-deep-web-death-grips-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop experimental</span>
@@ -1280,7 +1428,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Death Grips</span>
                         <span class="tag">MC Ride</span>
@@ -1295,7 +1443,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02139e26c6e1e4c01e382a0a06" alt="hold-your-horse-is-hella-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Math rock</span>
@@ -1304,7 +1452,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Hella</span>
                         <span class="tag">Zach Hill</span>
@@ -1317,7 +1465,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0283bb78285449998bb974da45" alt="donuts-j-dilla-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop instrumental</span>
@@ -1326,7 +1474,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">J Dilla</span>
                     </div>
@@ -1338,7 +1486,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02a18843206ad1d8a98d1487ef" alt="to-be-kind-swans-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Post-rock</span>
@@ -1348,7 +1496,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Swans</span>
                         <span class="tag">Michael Gira</span>
@@ -1361,7 +1509,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02a1a897ee5e642da6d945bcd7" alt="metaphorical-music-nujabes-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop instrumental</span>
@@ -1370,7 +1518,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Nujabes</span>
                     </div>
@@ -1382,7 +1530,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e022350e31bc346a6c20e9de166" alt="stankonia-outkast-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Southern hip hop</span>
@@ -1394,7 +1542,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">OutKast</span>
                         <span class="tag">André 3000</span>
@@ -1410,7 +1558,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e022832c76386b5931717eddd3f" alt="new-blue-sun-andre-3000-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Ambiente</span>
                         <span class="tag">New age</span>
@@ -1422,7 +1570,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">André 3000</span>
                     </div>
@@ -1434,7 +1582,7 @@
                 <span class="music-type">Trilha sonora</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e021d8c83507eb0f22b534a8b80" alt="made-in-abyss-ost-3-kevin-penkin-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Ambiente</span>
                         <span class="tag">Música classica</span>
@@ -1443,7 +1591,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Kevin Penkin</span>
                         <span class="tag">Anime</span>
@@ -1456,13 +1604,13 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0248cdf7e90abe3336f75149ab" alt="this-vision-is-hours-kevin-penkin-ikurru-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Ambiente</span>
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Kevin Penkin</span>
                         <span class="tag">Ikurru</span>
@@ -1475,7 +1623,7 @@
                 <span class="music-type">Mixtape</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02d0c72291cd96834e199e1ff8" alt="jeffery-young-thug-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Trap</span>
@@ -1489,7 +1637,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Young Thug</span>
                         <span class="tag">Travis Scott</span>
@@ -1508,7 +1656,7 @@
                 <span class="music-type">Mixtape</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0236fb79728dbb379579cef97e" alt="echoes-of-silence-the-weeknd-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">R&B</span>
                         <span class="tag">R&B alternativo</span>
@@ -1519,7 +1667,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Young Thug</span>
                         <span class="tag">Travis Scott</span>
@@ -1538,7 +1686,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02cd877891b23a92b1a89e60b5" alt="so-peter-gabriel-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Pop rock</span>
@@ -1552,7 +1700,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Peter Gabriel</span>
                         <span class="tag">Kate Bush</span>
@@ -1566,7 +1714,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02715973050587fe3c93033aad" alt="rodeo-travis-scott-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Trap</span>
@@ -1580,7 +1728,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Travis Scott</span>
                         <span class="tag">Mike Dean</span>
@@ -1608,7 +1756,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02b5e18a80757ba2f787213d21" alt="baduizm-erykah-badu-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Soul</span>
                         <span class="tag">Neo-soul</span>
@@ -1620,7 +1768,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Erykah Badu</span>
                         <span class="tag">The Roots</span>
@@ -1633,7 +1781,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02b2592bea12d840fd096ef965" alt="ds2-future-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Trap</span>
@@ -1642,7 +1790,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Future</span>
                         <span class="tag">Metro Boomin</span>
@@ -1657,7 +1805,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0207823ee6237208c835802663" alt="the-car-arctic-monkeys-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Pop</span>
                         <span class="tag">Baroque pop</span>
@@ -1670,7 +1818,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Arctic Monkeys</span>
                         <span class="tag">Alex Turner</span>
@@ -1685,7 +1833,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0287ef6dae7545173089c68f34" alt="catch-a-fire-bob-marley-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Reggae</span>
                         <span class="tag">Roots reggae</span>
@@ -1698,7 +1846,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Bob Marley</span>
                     </div>
@@ -1710,7 +1858,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0233ebdffaa447ff19ce9f24bb" alt="tha-carter-iii-lil-wayne-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Pop rap</span>
@@ -1721,7 +1869,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Lil Wayne</span>
                         <span class="tag">The Alchemist</span>
@@ -1737,7 +1885,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02cae6e44dcc84e2035c3ad092" alt="the-forever-story-jid-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Southern hip hop</span>
@@ -1750,7 +1898,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">JID</span>
                         <span class="tag">Dreamville</span>
@@ -1776,7 +1924,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0240080ed5a2ec3c92bf445247" alt="iv-badbadnotgood-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Jazz</span>
                         <span class="tag">Jazz fusion</span>
@@ -1786,7 +1934,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">BADBADNOTGOOD</span>
                         <span class="tag">KAYTRANADA</span>
@@ -1800,7 +1948,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e027027294551db4fda68b5ddac" alt="off-the-wall-michael-jackson-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Disco</span>
                         <span class="tag">Soul</span>
@@ -1813,7 +1961,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Michael Jackson</span>
                         <span class="tag">Quincy Jones</span>
@@ -1828,7 +1976,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02c79a70e8167cc1a4fab83781" alt="straight-outta-compton-nwa-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Gangsta rap</span>
@@ -1839,7 +1987,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">N.W.A</span>
                         <span class="tag">Dr. Dre</span>
@@ -1856,7 +2004,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e029710731c9d7baec635f1bab1" alt="the-chronic-dr-dre-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">G-funk</span>
@@ -1865,7 +2013,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Dr. Dre</span>
                         <span class="tag">Snoop Dogg</span>
@@ -1879,7 +2027,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0298260c528e6eec9dd431c1d7" alt="the-velvet-underground-&-nico-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Art rock</span>
@@ -1891,7 +2039,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">The Velvet Underground</span>
                         <span class="tag">Nico</span>
@@ -1907,7 +2055,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02bf3f45395f620f8bbf98d919" alt="lulu-lou-reed-metallica-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Metal</span>
                         <span class="tag">Metal avant-garde</span>
@@ -1920,7 +2068,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Lou Reed</span>
                         <span class="tag">Metallica</span>
@@ -1934,7 +2082,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02733af86f8dea9692a3f59d29" alt="doggystyle-snoop-dogg-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">G-gunk</span>
@@ -1944,7 +2092,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Snoop Dogg</span>
                         <span class="tag">Dr. Dre</span>
@@ -1958,7 +2106,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02b7b1138c52a208d1f8194f99" alt="death-certificate-ice-cube-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop político</span>
@@ -1969,7 +2117,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Ice Cube</span>
                         <span class="tag">No Vaseline</span>
@@ -1982,7 +2130,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02457cf7bf90c72401e3952763" alt="io-peter-gabriel-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Art rock</span>
@@ -1995,7 +2143,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Peter Gabriel</span>
                         <span class="tag">Tony Levin</span>
@@ -2008,7 +2156,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e028fc06398d8852596d4981252" alt="peace-sells-megadeth-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Metal</span>
                         <span class="tag">Thrash metal</span>
@@ -2016,7 +2164,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Megadeth</span>
                         <span class="tag">Dave Mustaine</span>
@@ -2031,7 +2179,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02045fc920ecf4f8094888ec26" alt="illmatic-nas-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">East Coast hip hop</span>
@@ -2042,7 +2190,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Nas</span>
                         <span class="tag">Q-Tip</span>
@@ -2057,7 +2205,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02073aebff28f79959d2543596" alt="all-eyez-on-me-tupac-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">West Coast hip hop</span>
@@ -2067,7 +2215,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">2Pac</span>
                         <span class="tag">Dr. Dre</span>
@@ -2089,7 +2237,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://merchbar.imgix.net/product/490/10530/731383680403/CVMdnu8E731383680403.jpg?q=40&auto=compress,format&w=768" alt="akira-symphonic-suite-geinoh-yamashirogumi-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Gamelão</span>
                         <span class="tag">Música clássica</span>
@@ -2100,7 +2248,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Geinoh Yamashirogumi</span>
                         <span class="tag">Shoji Yamashiro</span>
@@ -2114,7 +2262,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e022a061f8cc383443cbb46adf6" alt="persona-5-ost-shoji-meguro-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Jazz</span>
                         <span class="tag">Acid jazz</span>
@@ -2123,7 +2271,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Shoji Meguro</span>
                         <span class="tag">Videogame</span>
@@ -2136,7 +2284,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e027ba7b4d23c717f3211717946" alt="big-fish-theory-vince-staples-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop experimental</span>
@@ -2149,7 +2297,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Vince Staples</span>
                         <span class="tag">Justin Vernon</span>
@@ -2171,7 +2319,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02bf7c317a63c4f128b8823406" alt="for-emma-forever-ago-bon-iver-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Folk</span>
                         <span class="tag">Indie folk</span>
@@ -2179,7 +2327,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Justin Vernon</span>
                         <span class="tag">Thomas Powers</span>
@@ -2192,7 +2340,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0252c24049a16d59e98a638651" alt="alfredo-freddie-gibbs-the-alchemist-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Gangsta rap</span>
@@ -2202,7 +2350,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Freddie Gibbs</span>
                         <span class="tag">The Alchemist</span>
@@ -2219,7 +2367,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0200388d66c87c2c0033849bfd" alt="leviathan-mastodon-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Metal</span>
                         <span class="tag">Sludge metal</span>
@@ -2227,7 +2375,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Mastodon</span>
                         <span class="tag">Matt Bayles</span>
@@ -2240,7 +2388,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0274dc897ea75402db37ef239a" alt="madvillainy-madvillain-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop abstrato</span>
@@ -2250,7 +2398,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">MF DOOM</span>
                         <span class="tag">Madlib</span>
@@ -2263,7 +2411,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0252f194d02c39909d1b284799" alt="mm-food-mf-doom-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop abstrato</span>
@@ -2274,7 +2422,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">MF DOOM</span>
                         <span class="tag">Madlib</span>
@@ -2290,7 +2438,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02f8cdb18235929acea10d050f" alt="cross-point-casiopea-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Jazz</span>
                         <span class="tag">Jazz fusion</span>
@@ -2299,7 +2447,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Casiopea</span>
                         <span class="tag">Issei Noro</span>
@@ -2315,7 +2463,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02aac2a34ca7b60665d5e78f7e" alt="liberation-talib-kweli-madlib-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Boom bap</span>
@@ -2325,7 +2473,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Talib Kweli</span>
                         <span class="tag">Madlib</span>
@@ -2338,7 +2486,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02ce7846efcfc5dc8c0e37ba14" alt="haram-armand-hammer-the-alchemist-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop abstrato</span>
@@ -2352,7 +2500,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Armand Hammer</span>
                         <span class="tag">The Alchemist</span>
@@ -2366,7 +2514,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02c718e0f746b0f671fd92421e" alt="brasilian-skies-masayoshi-takanaka-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Samba</span>
                         <span class="tag">Jazz</span>
@@ -2374,7 +2522,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Masayoshi Takanaka</span>
                         <span class="tag">Ryuichi Sakamoto</span>
@@ -2393,7 +2541,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e025b7865be7f7fcc05faec6137" alt="the-score-fugees-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">East Coast hip hop</span>
@@ -2405,7 +2553,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Fugees</span>
                         <span class="tag">Lauryn Hill</span>
@@ -2419,7 +2567,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02e08b1250db5f75643f1508c9" alt="the-miseducation-of-lauryn-hill-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">R&B</span>
                         <span class="tag">R&B contemporâneo</span>
@@ -2432,7 +2580,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Lauryn Hill</span>
                         <span class="tag">Che Pope</span>
@@ -2450,7 +2598,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da8485ed07ce0ac796f82db025c9" alt="flying-beagle-himiko-kikuchi-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Jazz</span>
                         <span class="tag">Jazz fusion</span>
@@ -2461,7 +2609,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Himiko Kikuchi</span>
                         <span class="tag">Keiichi Nakamura</span>
@@ -2474,14 +2622,14 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02146959718287f09b3f07f30c" alt="truth-t-square-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Jazz</span>
                         <span class="tag">Jazz fusion</span>
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">T-SQUARE</span>
                         <span class="tag">Masahiro Andoh</span>
@@ -2496,7 +2644,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e024c88e268c9dc19f79ccdbb97" alt="get-rich-or-die-tryin-50-cent-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Gangsta rap</span>
@@ -2505,7 +2653,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">50 Cent</span>
                         <span class="tag">Dr. Dre</span>
@@ -2522,7 +2670,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e022b3dc336a7a69293c25d9ade" alt="voodoo-d-angelo-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Soul</span>
                         <span class="tag">Neo-soul</span>
@@ -2534,7 +2682,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">D'Angelo</span>
                         <span class="tag">DJ Premier</span>
@@ -2551,7 +2699,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e029bef45ee387f274ea3198c55" alt="the-slim-shady-ep-eminem-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hardcore hip hop</span>
@@ -2560,7 +2708,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Eminem</span>
                         <span class="tag">Dr. Dre</span>
@@ -2573,7 +2721,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02c4fee55d7b51479627c31f89" alt="heroes-&-villains-metro-boomin-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Trap</span>
@@ -2584,7 +2732,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Metro Boomin</span>
                         <span class="tag">Thundercat</span>
@@ -2608,7 +2756,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02fe148db2d296efd0f703e61f" alt="hemispheres-rush-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Rock progressivo</span>
@@ -2617,7 +2765,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Rush</span>
                         <span class="tag">Geddy Lee</span>
@@ -2632,14 +2780,14 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02472c5d019c4b28f369ef9f36" alt="free-hand-gentle-giant-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Rock progressivo</span>
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Gentle Giant</span>
                         <span class="tag">Gary Green</span>
@@ -2656,7 +2804,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0289b56f56323925d57b38944d" alt="black-on-both-sides-mos-def-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop consciente</span>
@@ -2668,7 +2816,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Mos Def</span>
                         <span class="tag">Yasiin Bey</span>
@@ -2685,7 +2833,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0292cd8ca03552bdf6dd5e8934" alt="nonagon-infinity-king-gizzard-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Rock psicodélico</span>
@@ -2696,7 +2844,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">King Gizzard & The Lizard Wizard</span>
                         <span class="tag">Stu Mackenzie</span>
@@ -2709,7 +2857,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02c2eef9f8d1212c80ed4ee399" alt="tawk-tomahawk-hiatus-kaiyote-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Soul</span>
                         <span class="tag">Neo-soul</span>
@@ -2719,7 +2867,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Hiatus Kaiyote</span>
                         <span class="tag">Q-Tip</span>
@@ -2732,7 +2880,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e027005885df706891a3c182a57" alt="igor-tyler-the-creator-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Soul</span>
                         <span class="tag">Neo-soul</span>
@@ -2747,7 +2895,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Tyler, The Creator</span>
                         <span class="tag">Odd Future</span>
@@ -2764,7 +2912,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0246f9bf1154c7205b0e8b1667" alt="doris-earl-sweatshirt-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">West Coast hip hop</span>
@@ -2774,7 +2922,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Earl Sweatshirt</span>
                         <span class="tag">Odd Future</span>
@@ -2798,7 +2946,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e027aede4855f6d0d738012e2e5" alt="channel-orange-frank-ocean-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">R&B</span>
                         <span class="tag">R&B alternativo</span>
@@ -2809,7 +2957,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Frank Ocean</span>
                         <span class="tag">Odd Future</span>
@@ -2826,7 +2974,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02b06fb4afeba7b2ab170e4513" alt="time-control-hiromi-s-sonicbloom-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Jazz</span>
                         <span class="tag">Jazz fusion</span>
@@ -2834,7 +2982,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Hiromi's Sonicbloom</span>
                         <span class="tag">Hiromi Uehara</span>
@@ -2850,7 +2998,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://upload.wikimedia.org/wikipedia/en/d/de/For_You_%28album_cover%29.png" alt="for-you-tatsuro-yamashita-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">City pop</span>
                         <span class="tag">Boogie</span>
@@ -2861,7 +3009,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Tatsuro Yamashita</span>
                         <span class="tag">Minako Yoshida</span>
@@ -2877,7 +3025,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e021103e089afdff872569acce6" alt="watching-movies-with-the-sound-off-mac-miller-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop abstrato</span>
@@ -2887,7 +3035,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Mac Miller</span>
                         <span class="tag">I.D. Labs</span>
@@ -2910,7 +3058,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02758f24ced78e29586d931404" alt="control-system-ab-soul-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">West Coast hip hop</span>
@@ -2920,7 +3068,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Ab-Soul</span>
                         <span class="tag">Black Hippy</span>
@@ -2945,7 +3093,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02793a0d50c1af74449ddfba7a" alt="90059-jay-rock-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">West Coast hip hop</span>
@@ -2956,7 +3104,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Jay Rock</span>
                         <span class="tag">Black Hippy</span>
@@ -2980,7 +3128,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0225475181eb4622ed295f9485" alt="blank-face-lp-schoolboy-q-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">West Coast hip hop</span>
@@ -2992,7 +3140,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">ScHoolboy Q</span>
                         <span class="tag">TDE</span>
@@ -3021,7 +3169,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02f1594eeff2ea90e0f3873919" alt="abraxas-santana-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Rock latino</span>
@@ -3030,7 +3178,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Santana</span>
                         <span class="tag">Carlos Santana</span>
@@ -3046,7 +3194,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e027a2a55eaab314c41d8f6e512" alt="tusk-fleetwood-mac-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Soft rock</span>
@@ -3055,7 +3203,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Fleetwood Mac</span>
                         <span class="tag">Richard Dashut</span>
@@ -3074,7 +3222,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e028e1a23e42f68260b7b274e09" alt="desire-bob-dylan-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Folk</span>
@@ -3087,7 +3235,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Bob Dylan</span>
                         <span class="tag">Don DeVito</span>
@@ -3101,14 +3249,14 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0234ded124e44ed4fe8359891f" alt="watch-the-throne-jay-z-kanye-west-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Pop rap</span>
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Jay-Z</span>
                         <span class="tag">Kanye West</span>
@@ -3133,7 +3281,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e027513c4956ea5552caf02eab6" alt="4-44-jay-z-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">East Coast hip hop</span>
@@ -3142,7 +3290,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Jay-Z</span>
                         <span class="tag">No I.D.</span>
@@ -3160,7 +3308,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0225b055377757b3cdd6f26b78" alt="the-college-dropout-kanye-west-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Pop rap</span>
@@ -3171,7 +3319,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Kanye West</span>
                         <span class="tag">Evidence</span>
@@ -3193,7 +3341,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0285c5e6c686ced3e43bae2748" alt="drunk-thundercat-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Soul</span>
                         <span class="tag">Neo-soul</span>
@@ -3206,7 +3354,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Thundercat</span>
                         <span class="tag">Flying Lotus</span>
@@ -3228,7 +3376,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e027582716b3666a5235d5af4ea" alt="awaken-my-love-childish-gambino-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Soul</span>
                         <span class="tag">Neo-soul</span>
@@ -3239,7 +3387,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Childish Gambino</span>
                         <span class="tag">Ludwig Göransson</span>
@@ -3256,7 +3404,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e025a4e89a0c9e6b57c4842ede6" alt="black-&-blu-gary-clark-jr-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Soul</span>
                         <span class="tag">Neo-soul</span>
@@ -3267,7 +3415,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Gary Clark Jr.</span>
                         <span class="tag">Mike Elizondo</span>
@@ -3280,7 +3428,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e028cf4c85912fdeb106707fb4c" alt="scaring-the-hoes-jpegmafia-danny-brown-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop experimental</span>
@@ -3292,7 +3440,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">JPEGMAFIA</span>
                         <span class="tag">Danny Brown</span>
@@ -3306,7 +3454,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0206ce558a01af20d2837fb601" alt="scaring-the-hoes-jpegmafia-danny-brown-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Hip hop experimental</span>
@@ -3316,7 +3464,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Danny Brown</span>
                         <span class="tag">Paul White</span>
@@ -3337,7 +3485,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e0265b14a33b50a707d165910e9" alt="brain-salad-surgery-emerson-lake-&-palmer-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Rock progressivo</span>
@@ -3345,7 +3493,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Emerson, Lake & Palmer</span>
                         <span class="tag">Greg Lake</span>
@@ -3361,7 +3509,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e02b2f14297bfefeb9486f7240e" alt="prologue-renaissance-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Rock</span>
                         <span class="tag">Rock progressivo</span>
@@ -3371,7 +3519,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Renaissance</span>
                         <span class="tag">Miles Copeland</span>
@@ -3388,7 +3536,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://upload.wikimedia.org/wikipedia/en/9/97/Ready_To_Die.jpg" alt="ready-to-die-the-notorious-big-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Gangsta rap</span>
@@ -3399,7 +3547,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">The Notorious B.I.G.</span>
                         <span class="tag">Puff Daddy</span>
@@ -3414,7 +3562,7 @@
                 <span class="music-type">Álbum</span>
                 <img src="https://i.scdn.co/image/ab67616d00001e025901aaa980d3e714bf01171c" alt="enter-the-wu-tang-clan-36-chambers-cover">
                 <div class="tags-section">
-                    <p>Gêneros: </p>
+                    <p>Gêneros</p>
                     <div class="tags">
                         <span class="tag">Hip hop</span>
                         <span class="tag">Boom bap</span>
@@ -3423,7 +3571,7 @@
                     </div>
                 </div>
                 <div class="tags-section">
-                    <p>Tags: </p>
+                    <p>Tags</p>
                     <div class="tags">
                         <span class="tag">Wu-Tang Clan</span>
                         <span class="tag">RZA</span>
