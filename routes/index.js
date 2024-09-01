@@ -1,7 +1,11 @@
 function goTo(page) {
+    const prod = true;
+
+    const path = prod ? '/av-intw' : '';
+
     switch (page) {
         case 'home':
-            window.location.pathname = '';
+            window.location.pathname = path;
             break;
         case 'signup':
             if (!loggedIn()) {
@@ -14,7 +18,7 @@ function goTo(page) {
             }
             break;
         default:
-            window.location.pathname = '';
+            window.location.pathname = path;
             break;
     }
 }

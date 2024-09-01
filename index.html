@@ -42,8 +42,8 @@
         <div id="auth-div-header">
             <span id="auth-cta">Entre na sua conta!</span>
             <div id="auth-redirects">
-                <a href="/auth/login">Entrar</a>
-                <a href="/auth/signup">Cadastro</a>
+                <a href="javascript:goTo('login')">Entrar</a>
+                <a href="javascript:goTo('signup')">Cadastro</a>
             </div>
         </div>
     </header>
@@ -52,7 +52,7 @@
             Recomende música
         </h2>
         <span id="recommendation-cta-logged-out">
-            Faça <a href="/auth/login">login</a> para <a href="javascript:toggleHiddenModal()">recomendar</a>, ou recomende de forma anônima!
+            Faça <a href="javascript:goTo('login')">login</a> para <a href="javascript:toggleHiddenModal()">recomendar</a>, ou recomende de forma anônima!
         </span>
         <span id="recommendation-cta-logged-in" class="hidden" hidden>
             <a href="javascript:toggleHiddenModal()">Recomende</a> publicamente ou de forma anônima!

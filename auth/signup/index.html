@@ -51,7 +51,7 @@
                     maxlength="30"
                     pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{6,30}$/"
                 >
-                <span class="login-signup-cta">Já tem uma conta? <a href="/auth/login">Entrar</a>.</span>
+                <span class="login-signup-cta">Já tem uma conta? <a href="javascript:goTo('login')">Entrar</a>.</span>
                 <button
                     type="button"
                     onclick="signup(document.getElementById('username').value, document.getElementById('profile-picture').value, document.getElementById('password').value, document.getElementById('confirm-password').value)"
