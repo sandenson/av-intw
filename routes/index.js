@@ -9,12 +9,12 @@ function goTo(page) {
             break;
         case 'signup':
             if (!loggedIn()) {
-                window.location.pathname = '/auth/signup';
+                window.location.pathname = `${path}/auth/signup`;
             }
             break;
         case 'login':
             if (!loggedIn()) {
-                window.location.pathname = '/auth/login';
+                window.location.pathname = `${path}/auth/login`;
             }
             break;
         default:
